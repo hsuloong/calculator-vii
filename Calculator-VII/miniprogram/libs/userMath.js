@@ -75,7 +75,7 @@ function callFunctionProxy(operation, operands) {
   return null
 }
 
-function shuntingYardAlgorithm(input) {
+export function shuntingYardAlgorithm(input) {
   let output = []
   let errmsg = ''
   let operationStack = []
@@ -156,7 +156,7 @@ function shuntingYardAlgorithm(input) {
   return {'status':true, 'result':output, 'errmsg':errmsg}
 }
 
-function executeReversePolishNotationExpression(input) {
+export function executeReversePolishNotationExpression(input) {
   let result = null
   let errmsg = ''
   let resultStack = []

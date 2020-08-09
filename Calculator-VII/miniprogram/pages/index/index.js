@@ -1,16 +1,13 @@
 //index.js
 const app = getApp()
-const userMath = require('../../libs/userMath')
+const UserMath = require('../../libs/userMath')
 
 Page({
   mixins: [require('../../mixin/themeChanged')],
   data: {
     inputShowed: false,
     inputVal: "",
-    userInputData: '',
-    calculateResult: '计算结果',
-    progress: 'width: 10%;',
-    canceled: false
+    result: '',
   },
 
   showInput: function () {
@@ -36,20 +33,34 @@ Page({
     this.setData({
         inputVal: e.detail.value
     });
-    console.log(this.data.inputVal)
   },
 
-  userInput: function(event) {
-    this.setData({
-      userInputData: event.detail.value
+  startCaculate: function() {
+    console.log('Enter')
+    let that = this
+    let input = that.data.inputVal.split(' ')
+    console.log(input)
+    if (that.data.length <= 0) {
+      return
+    }
+    let output = UserMath.shuntingYardAlgorithm(input)
+    console.log(output)
+    if (!output.status) {
+      that.setData({
+        result:'转换表达式出错|' + output.errmsg
+      })
+      return
+    }
+    let calcResult = UserMath.executeReversePolishNotationExpression(output.result)
+    console.log(calcResult)
+    if (!calcResult.status) {
+      that.setData({
+        result:'计算出错|' + calcResult.errmsg
+      })
+      return
+    }
+    that.setData({
+      result:'表达式计算结果为：' + calcResult.result
     })
   },
-  startCaculate: function() {
-    console.log(eval(this.data.userInputData));
-    console.log("click button")
-  },
-  cancelCalculate: function() {
-    
-  }
-
 })
